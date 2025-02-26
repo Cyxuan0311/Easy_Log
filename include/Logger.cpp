@@ -132,4 +132,3 @@ void Logger::rotate()
     open(m_filename);
 }
 
-
