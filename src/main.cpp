@@ -1,45 +1,17 @@
-/*#include <iostream>
-#include <string>
-#include <cstdlib>
-using namespace std;
-
-#include "include/Logger.h"
-using namespace frames::include;
-*/
-
-/*int main()
-{
-    // 初始化日志对象
-    Logger::instance()->open("./Logging.log");
-
-    debug("name=%s age=%d", "jack", 18);
-
-    return 0;
-}*/
-
-/*int main(){
-
-    Logger::instance()->open("./Logging.log");
-
-    const char *username=getenv("USER");
-
-    debug("name=%s age=%d",username ? username : "unknown",18);
-
-    return 0;
-}
-*/
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <ifaddrs.h>    // 新增头文件
 #include <arpa/inet.h> 
 #include "Logger.h"
+#include "ftxui/dom/elements.hpp"  // FTXUI 头文件
+#include "ftxui/screen/screen.hpp" // FTXUI 头文件
 
 using namespace std;
 using namespace frames::include;
+using namespace ftxui;
 
-
-// 新增IP获取函数
+// 新增 IP 获取函数
 string get_local_ip() {
     struct ifaddrs *addrs = nullptr;
     getifaddrs(&addrs);
@@ -67,10 +39,21 @@ int main()
     Logger::instance()->open("./Logging.log");
     
     const char* username = getenv("USER");
-    string ip = get_local_ip();  // 获取IP地址
+    string ip = get_local_ip();  // 获取 IP 地址
     
     // 修改后的日志格式
     debug("name=%s ip=%s", username ? username : "unknown", ip.c_str());
+
+    // FTXUI 示例代码
+    auto screen = Screen::Create(Dimension::Full(), Dimension::Full());
+    auto document = vbox({
+        text("Welcome to Easy_Log!"),
+        text("Username: " + string(username ? username : "unknown")),
+        text("IP Address: " + ip)
+    });
+
+    Render(screen, document);
+    screen.Print();
 
     return 0;
 }
